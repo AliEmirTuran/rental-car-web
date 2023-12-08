@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Personel Satış Yüzdeleri</title>
+</head>
+<body>
+    <h1 style="text-align: center; color: cadetblue;">PERSONEL SATIŞ YÜZDESİ</h1>
+    <section>
+        <div>
+            <canvas id="cizimAlani" width="1800" height="700"></canvas>
+        </div>
+
+        <script type="text/javascript">
+            var renkler = ["#39ca74", "#e54d42", "#f0c330", "#3999d8", "#35485d"];
+            var veriler = [80, 23, 15, 7, 1];
+            var kisiler = ["Ayça Kutlu", "Melike Şahin", "Kerem Sezgin", "İpek Yılmaz", "Serkan Sarar"];
+
+            function toplamAl() {
+                var toplam = 0;
+                for (var j = 0; j < veriler.length; j++) {
+                    toplam += (typeof veriler[j] == 'number') ? veriler[j] : 0;
+                }
+                return toplam;
+            }
+
+            function veriCiz() {
+                var cizimAlani;
+                var cizimNesnesi;
+                var sonBitis = 0;
+                var toplam = toplamAl();
+
+                cizimAlani = document.getElementById("cizimAlani");
+                var x = (cizimAlani.width) / 2;
+                var y = (cizimAlani.height) / 2;
+                var r = 150;
+
+                cizimNesnesi = cizimAlani.getContext("2d");
+                cizimNesnesi.clearRect(0, 0, cizimAlani.width, cizimAlani.height);
+
+                for (var i = 0; i < veriler.length; i++) {
+                    cizimNesnesi.fillStyle = renkler[i];
+                    cizimNesnesi.beginPath();
+                    cizimNesnesi.moveTo(x, y);
+                    cizimNesnesi.arc(x, y, r, sonBitis, sonBitis + (Math.PI * 2 * (veriler[i] / toplam)), false);
+                    cizimNesnesi.lineTo(x, y);
+                    cizimNesnesi.fill();
+
+                    cizimNesnesi.beginPath();
+                    var baslangic = [];
+                    var bitis = [];
+                    var son = 0;
+                    var yansit = 0;
+                    var metinOffset = 0;
+                    var yuzde = (veriler[i] / toplam) * 100;
+                    baslangic = getPoint(x, y, r - 20, (sonBitis + (Math.PI * 2 * (veriler[i] / toplam)) / 2));
+                    bitis = getPoint(x, y, r + 20, (sonBitis + (Math.PI * 2 * (veriler[i] / toplam)) / 2));
+                    
+                    if (baslangic[0] <= x) {
+                        yansit = -1;
+                        metinOffset = -110;
+                    } else {
+                        yansit = 1;
+                        metinOffset = 10;
+                    }
+                    cizimNesnesi.moveTo(baslangic[0], baslangic[1]);
+                    cizimNesnesi.lineTo(bitis[0], bitis[1]);
+                    cizimNesnesi.lineTo(bitis[0] + 120 * yansit, bitis[1]);
+                    cizimNesnesi.strokeStyle = "#bdc3c7";
+                    cizimNesnesi.lineWidth = 2;
+                    cizimNesnesi.stroke();
+
+                    cizimNesnesi.font = "17px Arial";
+                    cizimNesnesi.fillText(kisiler[i] + "    " + yuzde.toFixed(2) + "%", bitis[0] + metinOffset, bitis[1] - 4);
+
+                    sonBitis += Math.PI * 2 * (veriler[i] / toplam);
+                }
+            }
+
+            function getPoint(c1, c2, yaricap, aci) {
+                return [c1 + Math.cos(aci) * yaricap, c2 + Math.sin(aci) * yaricap];
+            }
+
+            
+            veriCiz();
+        </script>
+    </section>
+    <hr>
+
+    <section>
+        <h1 style="text-align: center;">Yıllara Göre Araç Kiralanma Gün Adetleri</h1>
+        <table border="1" class="sales-table">
+            <tr class="head-table">
+                
+                <th>MARKA</th>
+                <th>MODEL</th>
+                <th>2022</th>
+                <th>2023</th>
+            </tr>
+            <tr>
+                <td>BMW</td>
+                <td>3 SERİSİ</td>
+                <td>205</td>
+                <td>222</td>
+
+            </tr>
+            <tr>
+                <td>Volkswagen</td>
+                <td>Troc</td>
+                <td>274</td>
+                <td>302</td>
+            </tr>
+            <tr>
+                <td>Jeep</td>
+                <td>Renegade</td>
+                <td>173</td>
+                <td>142</td>
+            </tr>
+            <tr>
+                <td>Volkswagen</td>
+                <td>Passat</td>
+                <td>278</td>
+                <td>306</td>
+            </tr>
+            <tr>
+                <td>Cherry</td>
+                <td>Tiggo 8</td>
+                <td>0</td>
+                <td>113</td>
+            </tr>
+            <tr>
+                <td>Audi</td>
+                <td>Q3</td>
+                <td>114</td>
+                <td>162</td>
+            </tr>
+            <tr>
+                <td>Fiat</td>
+                <td>Egea</td>
+                <td>308</td>
+                <td>338</td>
+
+            </tr>
+            <tr>
+                <td>Renault</td>
+                <td>Megane</td>
+                <td>278</td>
+                <td>252</td>
+            </tr>
+            <tr>
+                <td>Ford</td>
+                <td>Kuga</td>
+                <td>112</td>
+                <td>94</td>
+            </tr>
+            <tr>
+                <td>Mercedes</td>
+                <td>Vito</td>
+                <td>141</td>
+                <td>201</td>
+            </tr>
+            <tr>
+                <td>Peugeot</td>
+                <td>5008</td>
+                <td>74</td>
+                <td>187</td>
+            </tr>
+            <tr>
+                <td>Peugeot</td>
+                <td>2008</td>
+                <td>111</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Vespa</td>
+                <td>Primavera 150</td>
+                <td>365</td>
+                <td>345</td>
+            </tr>
+            <tr>
+                <td>Yamaha</td>
+                <td>XMAX250cc</td>
+                <td>265</td>
+                <td>325</td>
+            </tr>
+            <tr>
+                <td>Honda</td>
+                <td>CBF 150</td>
+                <td>35</td>
+                <td>278</td>
+            </tr>
+            <tr>
+                <td>Honda</td>
+                <td>Forza-250</td>
+                <td>182</td>
+                <td>245</td>
+            </tr>
+            <tr>
+                <td>Honda</td>
+                <td>CB 250R</td>
+                <td>187</td>
+                <td>256</td>
+            </tr>
+            <tr>
+                <td>Honda</td>
+                <td>NC 750X</td>
+                <td>0</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>Porsche</td>
+                <td> Taycan</td>
+                <td>35</td>
+                <td>86</td>
+            </tr>
+            <tr>
+                <td>Lamborghini</td>
+                <td>Gallardo 2023</td>
+                <td>7</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>Jeep</td>
+                <td>Renegade</td>
+                <td>142</td>
+                <td>140</td>
+            </tr>
+            <tr>
+                <td>Land Rover</td>
+                <td>Defender 2023</td>
+                <td>0</td>
+                <td>24</td>
+            </tr>
+            <tr>
+                <td>Mercedes</td>
+                <td>AMG 73 4Matic</td>
+                <td>3</td>
+                <td>19</td>
+            </tr>
+            <tr>
+                <td>Audi</td>
+                <td>Q3</td>
+                <td>2</td>
+                <td>5</td>
+            </tr>
+
+            
+        </table>
+
+    </section>
+</body>
+</html>
+
+<style>
+    h1{
+        text-align: center;
+        margin-left: 15rem;
+    }
+    .sales-table{
+        border: 1px solid darkcyan;
+        
+        margin-top: 5rem;
+        margin-left: 10rem;
+        width: 100%;
+        height: auto;
+
+    }
+    .head-table{
+        color: red;
+        background-color: antiquewhite;
+    }
+    .sales-table tr{
+        border-radius: 1px;
+    }
+    .sales-table td{
+        text-align: center;
+        background-color:lightgreen;
+        color:black;
+    }
+
+
+</style>
